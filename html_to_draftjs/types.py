@@ -21,6 +21,10 @@ INLINE_TAGS = {
     # Italic style
     "i": "ITALIC",
     "em": "ITALIC",
+    # underline style
+    "u": "UNDERLINE",
+    # code style
+    "code": "CODE",
 }
 
 # All the supported block tag
@@ -45,6 +49,7 @@ TYPED_TAGS = {
     "p": [{"parent": "blockquote", "type": "blockquote"}],
     "ol": "",
     "ul": "",
+    "code": "code",
 }
 
 # All the supported mutable entities
