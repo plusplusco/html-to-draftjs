@@ -49,7 +49,7 @@ TYPED_TAGS = {
     "p": [{"parent": "blockquote", "type": "blockquote"}],
     "ol": "",
     "ul": "",
-    "code": "code",
+    "pre": "code",
 }
 
 # All the supported mutable entities
