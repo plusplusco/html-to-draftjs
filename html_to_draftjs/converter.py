@@ -115,6 +115,15 @@ class SoupConverter(object):
         self._entities = {}
         self._blocks = []
 
+    def get_list_depth(self, node):
+        depth = 0
+        aux_node = node
+        while aux_node.parent and aux_node.parent.name in ["ul", "ol", "li"]:
+            if aux_node.parent.name in ["ul", "ol"]:
+                depth += 1
+            aux_node = aux_node.parent
+        return depth - 1
+
     def _process_element_for_block(
         self, block, element: Tag, parent_element: Optional[Tag]
     ):
@@ -183,6 +192,9 @@ class SoupConverter(object):
         element_name = element.name.lower()
         if element_name in self.typed_blocks_types:
             block["type"] = self.get_typed_block_type(element, parent)
+
+        if element_name == "li":
+            block["depth"] = self.get_list_depth(element)
 
         # Convert the HTML content to DraftJS
         self._process_element_for_block(block, element, parent)
