@@ -1,6 +1,7 @@
 import pytest
+import bs4
 
-from html_to_draftjs import html_to_draftjs
+from html_to_draftjs import html_to_draftjs, SoupConverter
 
 
 def test_convert_nothing():
@@ -437,3 +438,52 @@ def test_convert_page():
             },
         ],
     }
+
+
+@pytest.mark.parametrize(
+    "html, expected_depth",
+    (
+        ("""
+        <body>
+        <ul>
+            <li>a</li>
+            <li id='123'>c</li>
+        </ul>
+        </body>
+        """, 0),
+        ("""
+        <body>
+        <ul>
+            <li>a
+                <ul>
+                    <li id='123'>b</li>
+                </ul>
+            </li>
+            <li>c</li>
+        </ul>
+        </body>
+        """, 1),
+        ("""
+        <body>
+            <ul>
+                <li>a
+                    <ul>
+                        <li>b
+                            <ul>
+                                <li id='123'>c</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>c</li>
+            </ul>
+            </body>
+        """, 2),
+    ),
+
+)
+def test_get_list_depth(html, expected_depth):
+    soup = bs4.BeautifulSoup(html, "lxml")
+    # Simulate when the converter gets to the deepest list node
+    body = soup.find("li", {'id': '123'})
+    assert SoupConverter(strict=False).get_list_depth(node=body) == expected_depth
