@@ -47,8 +47,8 @@ TYPED_TAGS = {
         {"parent": "ol", "type": "ordered-list-item"},
     ],
     "p": [{"parent": "blockquote", "type": "blockquote"}],
-    "ol": "",
-    "ul": "",
+    "ol": "unstyled",
+    "ul": "unstyled",
     "pre": "code",
 }
 
